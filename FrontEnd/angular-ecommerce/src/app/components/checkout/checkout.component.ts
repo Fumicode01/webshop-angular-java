@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -8,54 +9,71 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CheckoutComponent implements OnInit {
 
-    checkoutFormGroup: FormGroup;
+  checkoutFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  totalPrice: number = 0;
+  totalQuantity: number = 0;
+  
+  constructor(private formBuilder: FormBuilder,
+                     private cartService: CartService) { }
 
   ngOnInit(): void {
-      this.checkoutFormGroup = this.formBuilder.group({
-          customer: this.formBuilder.group({
-              firstName:[''],
-              lastName:[''],
-              email:['']
-          }),
-          shippingAddress:this.formBuilder.group({
-              street:[''],
-              city:[''],
-              state:[''],
-              country:[''],
-              zipCode:[''],
-          }),
-          billingAddress:this.formBuilder.group({
-            street:[''],
-            city:[''],
-            state:[''],
-            country:[''],
-            zipCode:[''],
-        }),
-        creditCard:this.formBuilder.group({
-            cardType:[''],
-            nameOnCard:[''],
-            cardNumber:[''],
-            securityCode:[''],
-            expirationMonth:[''],
-            expirationYear:[''],
-        }),
+
+     //subscribe to the cart totalPrice
+     this.cartService.totalPrice.subscribe(
+        data => this.totalPrice = data
+    )
+    //subscribe to the cart totalQuantity
+    this.cartService.totalQuantity.subscribe(
+        data => this.totalQuantity = data
+    )
+    
+    this.checkoutFormGroup = this.formBuilder.group({
+      customer: this.formBuilder.group({
+        firstName: [''],
+        lastName: [''],
+        email: ['']
+      }),
+      shippingAddress: this.formBuilder.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        country: [''],
+        zipCode: ['']
+      }),
+      billingAddress: this.formBuilder.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        country: [''],
+        zipCode: ['']
+      }),
+      creditCard: this.formBuilder.group({
+        cardType: [''],
+        nameOnCard: [''],
+        cardNumber: [''],
+        securityCode: [''],
+        expirationMonth: [''],
+        expirationYear: ['']
       })
+    });
   }
 
-  copyShippingAddressToBillingAddress(event){
+  copyShippingAddressToBillingAddress(event) {
 
-      if(event.target.checked) {
-        this.checkoutFormGroup.controls.billingAddress.setValue(this.checkoutFormGroup.controls.shippingAddress.value)
-      } else {
-        this.checkoutFormGroup.controls.billingAddress.reset();
-      }
+    if (event.target.checked) {
+      this.checkoutFormGroup.controls.billingAddress
+            .setValue(this.checkoutFormGroup.controls.shippingAddress.value);
+    }
+    else {
+      this.checkoutFormGroup.controls.billingAddress.reset();
+    }
+    
   }
 
-  onSubmit(){
-      console.log("Handling Submit")
-      console.log(this.checkoutFormGroup.get('customer').value)
+  onSubmit() {
+    console.log("Handling the submit button");
+    console.log(this.checkoutFormGroup.get('customer').value);
+    console.log("The email address is " + this.checkoutFormGroup.get('customer').value.email);
   }
-
 }
