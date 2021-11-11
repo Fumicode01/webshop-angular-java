@@ -55,12 +55,12 @@ export class CheckoutComponent implements OnInit {
         zipCode: ['']
       }),
       creditCard: this.formBuilder.group({
-        cardType: [''],
+        cardType: [' '],
         nameOnCard: [''],
         cardNumber: [''],
         securityCode: [''],
-        expirationMonth: [''],
-        expirationYear: ['']
+        expirationMonth: [' '],
+        expirationYear: [' ']
       })
     });
 
@@ -103,5 +103,30 @@ export class CheckoutComponent implements OnInit {
     console.log("Handling the submit button");
     console.log(this.checkoutFormGroup.get('customer').value);
     console.log("The email address is " + this.checkoutFormGroup.get('customer').value.email);
+  }
+
+  handleMonthsandYears(){
+
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+
+    const currentYear: number = new Date().getFullYear();
+    const selectedYear: number = Number(creditCardFormGroup.value.expirationYeaar);
+
+    // If the current year equals selected year, then start wuth the current Month
+    let startMonth: number;
+
+    if (currentYear === selectedYear) {
+        startMonth = new Date().getMonth() +1;
+    }else {
+        startMonth = 1;
+    }
+
+    this.formService.getCreditCardMonths(startMonth).subscribe(
+        data => {
+            console.log("Retrived credit card months:" + JSON.stringify(data))
+            this.creditCardMonths = data;
+        }
+    )
+
   }
 }
