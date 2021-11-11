@@ -64,24 +64,26 @@ export class CheckoutComponent implements OnInit {
       })
     });
 
-    //populate creditcard Month
-        const startMonth : number = new Date().getMonth() + 1;
-        console.log("StartMonth" + startMonth);
+    // populate credit card months
 
-        this.formService.getCreditCardMonths(startMonth).subscribe(
-            data=>{
-                console.log("Retrived credit card month" + JSON.stringify(data));
-                this.creditCardMonths = data;
-            }
-        )
+    const startMonth: number = new Date().getMonth() + 1;
+    console.log("startMonth: " + startMonth);
 
-    //populate creditcard Month
+    this.formService.getCreditCardMonths(startMonth).subscribe(
+      data => {
+        console.log("Retrieved credit card months: " + JSON.stringify(data));
+        this.creditCardMonths = data;
+      }
+    );
+
+    // populate credit card years
+
     this.formService.getCreditCardYears().subscribe(
-        data=>{
-            console.log("Retrived credit card month" + JSON.stringify(data));
-            this.creditCardYears = data;
-        }
-    )
+      data => {
+        console.log("Retrieved credit card years: " + JSON.stringify(data));
+        this.creditCardYears = data;
+      }
+    );
 
   }
 
