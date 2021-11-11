@@ -9,44 +9,44 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class CartDetailsComponent implements OnInit {
 
-    cartItems: CartItem[] = [];
-    totalPrice: number = 0;
-    totalQuantity: number = 0;
+  cartItems: CartItem[] = [];
+  totalPrice: number = 0;
+  totalQuantity: number = 0;
 
-  constructor(private cartService:CartService) { }
+  constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-      this.listCartDetails();
+    this.listCartDetails();
   }
-    listCartDetails() {
 
-        //get a handle to the cart items
-        this.cartItems = this.cartService.cartItems;
+  listCartDetails() {
 
-        //subscribe to the cart totalPrice
-        this.cartService.totalPrice.subscribe(
-            data => this.totalPrice = data
-        )
-        //subscribe to the cart totalQuantity
-        this.cartService.totalQuantity.subscribe(
-            data => this.totalQuantity = data
-        )
+    // get a handle to the cart items
+    this.cartItems = this.cartService.cartItems;
 
-        //compute cart total price and quantity
-        this.cartService.computeCartTotals();
-    }
+    // subscribe to the cart totalPrice
+    this.cartService.totalPrice.subscribe(
+      data => this.totalPrice = data
+    );
 
-    incrementQuantity(theCartItem: CartItem){
-        this.cartService.addToCart(theCartItem)
-    }
+    // subscribe to the cart totalQuantity
+    this.cartService.totalQuantity.subscribe( 
+      data => this.totalQuantity = data
+    );
 
-    decrementQuantity(theCartItem: CartItem){
-        this.cartService.decrementQuantity(theCartItem)
-    }
+    // compute cart total price and quantity
+    this.cartService.computeCartTotals();
+  }
 
-    remove(theCartItem: CartItem){
-        this.cartService.remove(theCartItem);
-    }
+  incrementQuantity(theCartItem: CartItem) {
+    this.cartService.addToCart(theCartItem);
+  }
 
+  decrementQuantity(theCartItem: CartItem) {
+    this.cartService.decrementQuantity(theCartItem);
+  }
 
+  remove(theCartItem: CartItem) {
+    this.cartService.remove(theCartItem);
+  }
 }
