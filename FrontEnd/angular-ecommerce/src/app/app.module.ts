@@ -40,6 +40,7 @@ import { OrderHistoryComponent } from './components/order-history/order-history.
  const oktaAuth = new OktaAuth(oktaConfig);
 
 const routes: Routes = [
+  {path: 'order-history', component: OrderHistoryComponent, canActivate: [OktaAuthGuard]},
   {path: 'members', component: MembersPageComponent, canActivate: [OktaAuthGuard]},
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},

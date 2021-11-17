@@ -1,6 +1,6 @@
 export class OrderHistory {
     id: string;
-    ordertrackingNumber: string;
+    orderTrackingNumber: string;
     totalPrice: number;
     totalQuantity: number;
     dateCreated: Date;
